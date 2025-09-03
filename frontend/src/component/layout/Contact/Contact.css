@@ -26,3 +26,17 @@
     transform: translateX(0);
   }
 }
+.contact-container {
+  text-align: center;
+  margin: 40px auto;
+  max-width: 600px;
+  padding: 20px;
+}
+
+.contact-entry {
+  margin-bottom: 30px;
+}
+
+.mail-btn {
+  text-decoration: none;
+}

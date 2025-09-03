@@ -7,6 +7,7 @@ import {
   getProductDetails,
   newReview,
 } from "../../actions/productAction";
+import { addToWishlist } from "../../actions/wishlistAction";
 import ReviewCard from "./ReviewCard.js";
 import Loader from "../layout/Loader/Loader";
 import { useAlert } from "react-alert";
@@ -21,6 +22,7 @@ import {
 } from "@material-ui/core";
 import { Rating } from "@material-ui/lab";
 import { NEW_REVIEW_RESET } from "../../constants/productConstants";
+import FavoriteBorderIcon from "@material-ui/icons/FavoriteBorder";
 
 const ProductDetails = ({ match }) => {
   const dispatch = useDispatch();
@@ -63,6 +65,10 @@ const ProductDetails = ({ match }) => {
   const addToCartHandler = () => {
     dispatch(addItemsToCart(match.params.id, quantity));
     alert.success("Item Added To Cart");
+  };
+
+  const addToWishlistHandler = () => {
+    dispatch(addToWishlist(match.params.id));
   };
 
   const submitReviewToggle = () => {
@@ -146,6 +152,12 @@ const ProductDetails = ({ match }) => {
                     onClick={addToCartHandler}
                   >
                     Add to Cart
+                  </button>
+                  <button
+                    className="wishlistButton"
+                    onClick={addToWishlistHandler}
+                  >
+                    <FavoriteBorderIcon /> Add to Wishlist
                   </button>
                 </div>
 

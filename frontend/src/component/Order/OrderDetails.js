@@ -3,7 +3,7 @@ import "./orderDetails.css";
 import { useSelector, useDispatch } from "react-redux";
 import MetaData from "../layout/MetaData";
 import { Link } from "react-router-dom";
-import { Typography } from "@material-ui/core";
+import { Typography, Button } from "@material-ui/core";
 import { getOrderDetails, clearErrors } from "../../actions/orderAction";
 import Loader from "../layout/Loader/Loader";
 import { useAlert } from "react-alert";
@@ -22,6 +22,38 @@ const OrderDetails = ({ match }) => {
 
     dispatch(getOrderDetails(match.params.id));
   }, [dispatch, alert, error, match.params.id]);
+
+  const downloadBill = () => {
+    const content = `
+Order ID: ${order._id}
+Name: ${order.user.name}
+Phone: ${order.shippingInfo.phoneNo}
+Address: ${order.shippingInfo.address}, ${order.shippingInfo.city}, ${order.shippingInfo.state}, ${order.shippingInfo.pinCode}, ${order.shippingInfo.country}
+Payment Status: ${order.paymentInfo.status}
+Total Price: ₹${order.totalPrice}
+Order Status: ${order.orderStatus}
+
+Items:
+${order.orderItems
+  .map(
+    (item) =>
+      `- ${item.name} (${item.quantity} x ₹${item.price}) = ₹${
+        item.quantity * item.price
+      }`
+  )
+  .join("\n")}
+`;
+
+    const blob = new Blob([content], { type: "text/plain" });
+    const href = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = href;
+    a.download = `Invoice_${order._id}.txt`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+  };
+
   return (
     <Fragment>
       {loading ? (
@@ -34,6 +66,14 @@ const OrderDetails = ({ match }) => {
               <Typography component="h1">
                 Order #{order && order._id}
               </Typography>
+
+              {/* Greeting shown only if order is Delivered */}
+              {order.orderStatus === "Delivered" && (
+                <Typography variant="h6" style={{ marginTop: "10px" }}>
+                  Hello, {order.user && order.user.name}!
+                </Typography>
+              )}
+
               <Typography>Shipping Info</Typography>
               <div className="orderDetailsContainerBox">
                 <div>
@@ -54,6 +94,7 @@ const OrderDetails = ({ match }) => {
                   </span>
                 </div>
               </div>
+
               <Typography>Payment</Typography>
               <div className="orderDetailsContainerBox">
                 <div>
@@ -71,10 +112,9 @@ const OrderDetails = ({ match }) => {
                       : "NOT PAID"}
                   </p>
                 </div>
-
                 <div>
                   <p>Amount:</p>
-                  <span>{order.totalPrice && order.totalPrice}</span>
+                  <span>₹{order.totalPrice && order.totalPrice}</span>
                 </div>
               </div>
 
@@ -83,15 +123,27 @@ const OrderDetails = ({ match }) => {
                 <div>
                   <p
                     className={
-                      order.orderStatus && order.orderStatus === "Delivered"
+                      order.orderStatus === "Delivered"
                         ? "greenColor"
                         : "redColor"
                     }
                   >
-                    {order.orderStatus && order.orderStatus}
+                    {order.orderStatus}
                   </p>
                 </div>
               </div>
+
+              {/* Bill download shown only if order is Delivered */}
+              {order.orderStatus === "Delivered" && (
+                <Button
+                  variant="contained"
+                  color="primary"
+                  onClick={downloadBill}
+                  style={{ marginTop: "20px" }}
+                >
+                  Download Bill
+                </Button>
+              )}
             </div>
 
             <div className="orderDetailsCartItems">

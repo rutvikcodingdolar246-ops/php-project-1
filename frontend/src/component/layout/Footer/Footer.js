@@ -5,26 +5,61 @@ import "./Footer.css";
 
 const Footer = () => {
   return (
-    <footer id="footer">
-      <div className="leftFooter">
-        <h4>DOWNLOAD OUR APP</h4>
-        <p>Download App for Android and IOS mobile phone</p>
-        <img src={playStore} alt="playstore" />
-        <img src={appStore} alt="Appstore" />
+    <footer className="footer">
+      {/* App Download Section */}
+      <div className="footer-column app-download">
+        <h4>Get the App</h4>
+        <p>Available on Android & iOS</p>
+        <div className="app-icons">
+          <img src={playStore} alt="Google Play Store" />
+          <img src={appStore} alt="Apple App Store" />
+        </div>
       </div>
 
-      <div className="midFooter">
-        <h1>ECOMMERCE.</h1>
-        <p>High Quality is our first priority</p>
-
-        <p>Copyrights 2021 &copy; MeAbhiSingh</p>
+      {/* Branding Section */}
+      <div className="footer-column brand">
+        <h1>ECOMMERCE</h1>
+        <p className="tagline">Quality & Trust Delivered.</p>
+        <small>
+          &copy; 2025 Dolar Rutvik, Darshan Raval, Devarsh Jasani.
+        </small>
       </div>
 
-      <div className="rightFooter">
-        <h4>Follow Us</h4>
-        <a href="http://instagram.com/meabhisingh">Instagram</a>
-        <a href="http://youtube.com/6packprogramemr">Youtube</a>
-        <a href="http://instagram.com/meabhisingh">Facebook</a>
+      {/* Social Links Section */}
+      <div className="footer-column social">
+        <h4>Connect with Us</h4>
+        <ul>
+          <li>
+            <span>Dolar Rutvik:</span>{" "}
+            <a
+              href="https://www.instagram.com/rutvik_dolar246"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Instagram
+            </a>
+          </li>
+          <li>
+            <span>Darshan Raval:</span>{" "}
+            <a
+              href="https://www.instagram.com/darshuraval_"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Instagram
+            </a>
+          </li>
+          <li>
+            <span>Devarsh Jasani:</span>{" "}
+            <a
+              href="https://www.instagram.com/devarsh_jasani_3"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Instagram
+            </a>
+          </li>
+        </ul>
       </div>
     </footer>
   );

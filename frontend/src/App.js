@@ -42,6 +42,7 @@ import ProductReviews from "./component/Admin/ProductReviews";
 import Contact from "./component/layout/Contact/Contact";
 import About from "./component/layout/About/About";
 import NotFound from "./component/layout/Not Found/NotFound";
+import Wishlist from "./component/Wishlist/Wishlist";
 
 function App() {
   const { isAuthenticated, user } = useSelector((state) => state.user);
@@ -95,6 +96,8 @@ function App() {
         <ProtectedRoute exact path="/account" component={Profile} />
 
         <ProtectedRoute exact path="/me/update" component={UpdateProfile} />
+
+        <ProtectedRoute exact path="/wishlist" component={Wishlist} />
 
         <ProtectedRoute
           exact

@@ -13,9 +13,7 @@ const LoginSignUp = ({ history, location }) => {
   const dispatch = useDispatch();
   const alert = useAlert();
 
-  const { error, loading, isAuthenticated } = useSelector(
-    (state) => state.user
-  );
+  const { error, loading, isAuthenticated } = useSelector((state) => state.user);
 
   const loginTab = useRef(null);
   const registerTab = useRef(null);
@@ -35,34 +33,70 @@ const LoginSignUp = ({ history, location }) => {
   const [avatar, setAvatar] = useState("/Profile.png");
   const [avatarPreview, setAvatarPreview] = useState("/Profile.png");
 
+  // JavaScript Validation Functions
+  const isValidEmail = (email) =>
+    /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+
+  const isValidPassword = (password) =>
+    password.length >= 6;
+
+  const isValidName = (name) =>
+    name.trim().length >= 2;
+
   const loginSubmit = (e) => {
     e.preventDefault();
+
+    // Validation
+    if (!isValidEmail(loginEmail)) {
+      alert.error("Please enter a valid email address.");
+      return;
+    }
+
+    if (!isValidPassword(loginPassword)) {
+      alert.error("Password must be at least 6 characters.");
+      return;
+    }
+
     dispatch(login(loginEmail, loginPassword));
   };
 
   const registerSubmit = (e) => {
     e.preventDefault();
 
-    const myForm = new FormData();
+    // Validation
+    if (!isValidName(name)) {
+      alert.error("Name must be at least 2 characters.");
+      return;
+    }
 
+    if (!isValidEmail(email)) {
+      alert.error("Please enter a valid email address.");
+      return;
+    }
+
+    if (!isValidPassword(password)) {
+      alert.error("Password must be at least 6 characters.");
+      return;
+    }
+
+    const myForm = new FormData();
     myForm.set("name", name);
     myForm.set("email", email);
     myForm.set("password", password);
     myForm.set("avatar", avatar);
+
     dispatch(register(myForm));
   };
 
   const registerDataChange = (e) => {
     if (e.target.name === "avatar") {
       const reader = new FileReader();
-
       reader.onload = () => {
         if (reader.readyState === 2) {
           setAvatarPreview(reader.result);
           setAvatar(reader.result);
         }
       };
-
       reader.readAsDataURL(e.target.files[0]);
     } else {
       setUser({ ...user, [e.target.name]: e.target.value });
@@ -138,6 +172,7 @@ const LoginSignUp = ({ history, location }) => {
                 <Link to="/password/forgot">Forget Password ?</Link>
                 <input type="submit" value="Login" className="loginBtn" />
               </form>
+
               <form
                 className="signUpForm"
                 ref={registerTab}
